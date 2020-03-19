@@ -20,4 +20,4 @@ pipelineConfig:
             - name: chart-sa
               mountPath: /secrets/charts
         step:
-          sh: make releasae
+          sh: make release
