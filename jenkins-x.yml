@@ -3,6 +3,9 @@ pipelineConfig:
   pipelines:
     overrides:
       - name: release
+        pipeline: release
+        agent:
+          image: gcr.io/jenkinsxio-labs/helm
         volumes:
           - name: chart-sa
             secret:
@@ -10,8 +13,6 @@ pipelineConfig:
               items:
                 - key: credentials.json
                   path: credentials.json
-        agent:
-          image: gcr.io/jenkinsxio-labs/helm
         containerOptions:
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
@@ -21,3 +22,4 @@ pipelineConfig:
               mountPath: /secrets/charts
         step:
           sh: make release
+          image: gcr.io/jenkinsxio-labs/helm
