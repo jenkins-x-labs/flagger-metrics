@@ -1,1 +1,23 @@
 buildPack: charts
+pipelineConfig:
+  pipelines:
+    overrides:
+      - name: release
+        volumes:
+          - name: chart-sa
+            secret:
+              secretName: chart-sa
+              items:
+                - key: credentials.json
+                  path: credentials.json
+        agent:
+          image: gcr.io/jenkinsxio-labs/helm
+        containerOptions:
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /secrets/charts/credentials.json
+          volumeMounts:
+            - name: chart-sa
+              mountPath: /secrets/charts
+        step:
+          sh: make releasae
